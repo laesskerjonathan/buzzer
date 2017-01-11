@@ -1,0 +1,28 @@
+<head>
+    <title>Add Pitch</title>
+</head>
+<body>
+    <h1>Register Pitch</h1>
+
+    <form action="/save" method="POST">
+        <table>
+            <tr>
+                <td>Speaker:</td>
+                <td><input type="text" name="speaker"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Title:</td>
+                <td><input type="text" name="title"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Date:</td>
+                <td><input type="text" name="date"></td>
+                <td>(dd.mm.yyyy hh:mm)</td>
+            </tr>
+        </table>
+        <br/>
+        <input type="submit" value="Register">
+    </form>
+</body>

@@ -1,0 +1,48 @@
+hash: 713b18094731bb77b4f7d35dc11acae90974a007821f467b4cb077091d2924e3
+updated: 2017-01-11T08:00:20.305350565+01:00
+imports:
+- name: github.com/golang/protobuf
+  version: 4bd1920723d7b7c925de087aa32e2187708897f7
+  subpackages:
+  - proto
+- name: github.com/gvalkov/golang-evdev
+  version: 87c03aa1a370124ec5a5fac733a629e0f9acd9a6
+- name: github.com/luismesas/goPi
+  version: abc9b85cfb5fdde8a715ca5d205e044e8b8fe52c
+  subpackages:
+  - MCP23S17
+  - ioctl
+  - piface
+  - spi
+- name: github.com/mattn/go-gtk
+  version: b9d8404b3c34d831190bdebca435e32c1fdd7a68
+  subpackages:
+  - gdk
+  - gdkpixbuf
+  - glib
+  - gtk
+  - pango
+- name: github.com/mattn/go-pointer
+  version: 46aacf851f34ad5bb503ee6d162915f3a5a5962c
+- name: github.com/tarm/serial
+  version: 37be519d49878d0098e34fb614136b81e6c87861
+- name: github.com/unrolled/render
+  version: 50716a0a853771bb36bfce61a45cdefdb98c2e6e
+- name: gitlab.com/marcsauter/ticker
+  version: 9896323c178dfd62a58b45b324a5a3be6413ff6f
+- name: golang.org/x/net
+  version: 6acef71eb69611914f7a30939ea9f6e194c78172
+  subpackages:
+  - context
+- name: google.golang.org/appengine
+  version: 8758a385849434ba5eac8aeedcf5192c5a0f5f10
+  subpackages:
+  - datastore
+  - internal
+  - internal/app_identity
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/modules
+  - internal/remote_api
+testImports: []

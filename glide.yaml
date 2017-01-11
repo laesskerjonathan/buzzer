@@ -1,0 +1,20 @@
+package: gitlab.com/marcsauter/pitchbuzzer
+import:
+- package: github.com/gvalkov/golang-evdev
+- package: github.com/luismesas/goPi
+  subpackages:
+  - piface
+  - spi
+- package: github.com/mattn/go-gtk
+  subpackages:
+  - gdk
+  - glib
+  - gtk
+- package: github.com/unrolled/render
+- package: gitlab.com/marcsauter/ticker
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: google.golang.org/appengine
+  subpackages:
+  - datastore

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+goapp serve $@ $(dirname $0)/buzzer-ws

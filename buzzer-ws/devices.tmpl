@@ -1,0 +1,30 @@
+<head>
+    <title>Devices</title>
+    <style>
+        table {
+            border: 1px solid black;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 3px;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Devices</h1>
+    <table style="width:50%;">
+        <tr>
+            <th style="width:50%;">Name</th>
+            <th style="width:50%;">IP</th> 
+        </tr>
+        {{range .}}
+        <tr>
+            <td>{{.Name}}</td>
+            <td>{{.IP}}</td>
+        </tr>
+        {{end}}
+    </table>
+</body>
