@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 	"time"
 
-	"gitlab.com/marcsauter/pitchbuzzer/device"
+	"github.com/marcsauter/buzzer/pkg/device"
 )
 
-//
+// Updater interface
 type Updater interface {
 	Update(data fmt.Stringer) error
 }

@@ -11,7 +11,6 @@ import:
   - glib
   - gtk
 - package: github.com/unrolled/render
-- package: gitlab.com/marcsauter/ticker
 - package: golang.org/x/net
   subpackages:
   - context

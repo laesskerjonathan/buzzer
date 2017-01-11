@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"gitlab.com/marcsauter/pitchbuzzer/pitch"
+	"github.com/marcsauter/buzzer/pkg/pitch"
 
 	"github.com/luismesas/goPi/piface"
 	"github.com/luismesas/goPi/spi"

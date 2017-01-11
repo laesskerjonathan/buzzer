@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"syscall"
 
-	"gitlab.com/marcsauter/pitchbuzzer/pitch"
-	"gitlab.com/marcsauter/ticker"
+	"github.com/marcsauter/buzzer/pkg/pitch"
+	"github.com/marcsauter/buzzer/pkg/ticker"
 )
 
 func main() {

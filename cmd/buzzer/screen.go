@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.com/marcsauter/pitchbuzzer/pitch"
+	"github.com/marcsauter/buzzer/pkg/pitch"
 
 	"github.com/mattn/go-gtk/gdk"
 	"github.com/mattn/go-gtk/glib"

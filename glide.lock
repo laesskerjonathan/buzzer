@@ -28,8 +28,6 @@ imports:
   version: 37be519d49878d0098e34fb614136b81e6c87861
 - name: github.com/unrolled/render
   version: 50716a0a853771bb36bfce61a45cdefdb98c2e6e
-- name: gitlab.com/marcsauter/ticker
-  version: 9896323c178dfd62a58b45b324a5a3be6413ff6f
 - name: golang.org/x/net
   version: 6acef71eb69611914f7a30939ea9f6e194c78172
   subpackages:
