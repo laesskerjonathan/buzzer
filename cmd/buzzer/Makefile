@@ -1,8 +1,8 @@
 SRCDIR=.
 BINDIR=/home/pi/bin
 
-SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
-BINARY=pbuzzer
+SOURCES := $(shell find $(SRCDIR) -name '*.go')
+BINARY=buzzer
 
 build: $(BINARY)
 

@@ -20,17 +20,17 @@ import (
 )
 
 func main() {
-	device := os.Getenv("PBUZZER_KEYPAD_DEVICE")
+	device := os.Getenv("BUZZER_KEYPAD_DEVICE")
 	if len(device) == 0 {
-		log.Fatal("PBUZZER_KEYPAD_DEVICE missing or not valid")
+		log.Fatal("BUZZER_KEYPAD_DEVICE missing or not valid")
 	}
-	url, err := url.Parse(os.Getenv("PBUZZER_PITCH_URL"))
+	url, err := url.Parse(os.Getenv("BUZZER_PITCH_URL"))
 	if err != nil || !url.IsAbs() {
-		log.Fatal("PBUZZER_PITCH_URL missing or not valid")
+		log.Fatal("BUZZER_PITCH_URL missing or not valid")
 	}
-	interval, err := strconv.Atoi(os.Getenv("PBUZZER_PITCH_CHECK_INTERVAL"))
+	interval, err := strconv.Atoi(os.Getenv("BUZZER_PITCH_CHECK_INTERVAL"))
 	if err != nil {
-		log.Fatal("PBUZZER_PITCH_CHECK_INTERVAL missing or not valid")
+		log.Fatal("BUZZER_PITCH_CHECK_INTERVAL missing or not valid")
 	}
 
 	// creates a new pifacedigital instance

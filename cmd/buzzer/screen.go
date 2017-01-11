@@ -15,6 +15,7 @@ import (
 	"github.com/mattn/go-gtk/gtk"
 )
 
+// Font settings
 const (
 	DefaultMonospaceFontExtraSmall = "Monospace 20"
 	DefaultMonospaceFontSmall      = "Monospace 40"
@@ -25,7 +26,7 @@ const (
 	DefaultKeypadText              = "%s\nEnter a valid Pitch Code to release the Buzzer ... "
 )
 
-//
+// Screen represents the display
 type Screen struct {
 	Ticker        string
 	Status        string
@@ -39,7 +40,7 @@ type Screen struct {
 	stopCountdown bool
 }
 
-//
+// NewScreen returns a new instance of Screen
 func NewScreen() *Screen {
 	return &Screen{
 		Ticker: "NEXT",

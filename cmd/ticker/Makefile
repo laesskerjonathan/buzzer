@@ -2,7 +2,7 @@ SRCDIR=.
 BINDIR=/home/pi/bin
 
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
-BINARY=pticker
+BINARY=ticker
 
 build: $(BINARY)
 

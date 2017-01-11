@@ -1,9 +1,10 @@
 package device
 
+// packeg is only used for buzzer-ws
+
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -11,21 +12,24 @@ import (
 	"sync"
 )
 
+// Device represents a device with name an IP
 type Device struct {
 	Name string
 	IP   string
 }
 
-// Devices
+// Devices represents a list of Device
 type Devices struct {
 	sync.Mutex
 	Items map[string]Device
 }
 
+// NewDevices returns a new Devices
 func NewDevices() *Devices {
 	return &Devices{Items: make(map[string]Device)}
 }
 
+// Register device name on URL
 func Register(name, url string) error {
 
 	ifAddrs, err := net.InterfaceAddrs()
@@ -52,7 +56,7 @@ func Register(name, url string) error {
 		return err
 	}
 	if resp.StatusCode != 200 {
-		return errors.New(fmt.Sprintf("%s: %s", url, resp.Status))
+		return fmt.Errorf("%s: %s", url, resp.Status)
 	}
 	return nil
 }

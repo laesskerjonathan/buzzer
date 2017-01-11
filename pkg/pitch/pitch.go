@@ -20,25 +20,27 @@ type Updater interface {
 
 // Pitch represents a pitch
 type Pitch struct {
-	Id           string    `json:"id"`
+	ID           string    `json:"id"`
 	Speaker      string    `json:"speaker"`
 	Title        string    `json:"title"`
 	Date         time.Time `json:"date"`
 	RegisteredAt time.Time `json:"registeredat"`
 	Released     bool      `json:"started"`
 	ReleasedAt   time.Time `json:"startedat"`
-	pitchUrl     *url.URL
+	pitchURL     *url.URL
 	ticker       *time.Ticker
 }
 
-//
+// FormattedDate returns the formatted Date
+// TODO: remove if buzzer-ws is no longer in use
 func (p *Pitch) FormattedDate() string {
 	// get the loc of the browser - but for now it's reasonable assumption
 	zrh, _ := time.LoadLocation("Europe/Zurich")
 	return p.Date.In(zrh).Format("02.01.2006 15:04")
 }
 
-//
+// FormattedReleasedAt returns the formatted ReleasedAt
+// TODO: remove if buzzer-ws is no longer in use
 func (p *Pitch) FormattedReleasedAt() string {
 	// get the loc of the browser - but for now it's reasonable assumption
 	zrh, _ := time.LoadLocation("Europe/Zurich")
@@ -46,6 +48,67 @@ func (p *Pitch) FormattedReleasedAt() string {
 		return p.ReleasedAt.In(zrh).Format("02.01.2006 15:04")
 	}
 	return ""
+}
+
+// NewPitch returns a new Pitch instance
+func NewPitch(u *url.URL) *Pitch {
+	return &Pitch{
+		pitchURL: u,
+	}
+}
+
+// Pitch has to fullfill the Stringer interface - see also Updater interface
+func (p *Pitch) String() string {
+	return fmt.Sprintf("%s - %s - %s", p.Speaker, p.Title, p.Date.Format("02.01.2006 15:04"))
+}
+
+// StartCheckNext start the checker for the next pitch and updates Pitch if something changes
+func (p *Pitch) StartCheckNext(interval int, out Updater) {
+	//
+	getNextPitch := func() Pitch {
+		p.pitchURL.Path = "next"
+		resp, err := http.Get(p.pitchURL.String())
+		if err != nil {
+			log.Print(err)
+			return Pitch{}
+		}
+		if resp.StatusCode != 200 {
+			log.Println(p.pitchURL.String(), resp.Status)
+			return Pitch{}
+		}
+		defer resp.Body.Close()
+		decoder := json.NewDecoder(resp.Body)
+		var p Pitch
+		if err := decoder.Decode(&p); err != nil {
+			log.Print(err)
+			return Pitch{}
+		}
+		return p
+	}
+	//
+	go func() {
+		p.ticker = time.NewTicker(time.Second * time.Duration(interval))
+		for {
+			if next := getNextPitch(); len(next.ID) > 0 && next.ID != p.ID {
+				p.ID = next.ID
+				p.Speaker = next.Speaker
+				p.Title = next.Title
+				p.Date = next.Date
+				out.Update(p)
+			}
+
+			// TODO: remove if buzzer-ws is no longer in use
+			p.pitchURL.Path = "device"
+			device.Register(filepath.Base(os.Args[0]), p.pitchURL.String())
+
+			<-p.ticker.C
+		}
+	}()
+}
+
+// StopCheckNext stop the checker for the next pitch
+func (p *Pitch) StopCheckNext() {
+	p.ticker.Stop()
 }
 
 // Pitches represents a slice of pitches
@@ -64,61 +127,4 @@ func (p Pitches) Less(i, j int) bool {
 //
 func (p Pitches) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
-}
-
-//
-func NewPitch(u *url.URL) *Pitch {
-	return &Pitch{
-		pitchUrl: u,
-	}
-}
-
-func (p *Pitch) String() string {
-	return fmt.Sprintf("%s - %s - %s", p.Speaker, p.Title, p.Date.Format("02.01.2006 15:04"))
-}
-
-//
-func (p *Pitch) StartCheckNext(interval int, out Updater) {
-	//
-	getNextPitch := func() Pitch {
-		p.pitchUrl.Path = "next"
-		resp, err := http.Get(p.pitchUrl.String())
-		if err != nil {
-			log.Print(err)
-			return Pitch{}
-		}
-		if resp.StatusCode != 200 {
-			log.Println(p.pitchUrl.String(), resp.Status)
-			return Pitch{}
-		}
-		defer resp.Body.Close()
-		decoder := json.NewDecoder(resp.Body)
-		var p Pitch
-		if err := decoder.Decode(&p); err != nil {
-			log.Print(err)
-			return Pitch{}
-		}
-		return p
-	}
-	//
-	go func() {
-		p.ticker = time.NewTicker(time.Second * time.Duration(interval))
-		for {
-			if next := getNextPitch(); len(next.Id) > 0 && next.Id != p.Id {
-				p.Id = next.Id
-				p.Speaker = next.Speaker
-				p.Title = next.Title
-				p.Date = next.Date
-				out.Update(p)
-			}
-			p.pitchUrl.Path = "device"
-			device.Register(filepath.Base(os.Args[0]), p.pitchUrl.String())
-			<-p.ticker.C
-		}
-	}()
-}
-
-//
-func (p *Pitch) StopCheckNext() {
-	p.ticker.Stop()
 }
