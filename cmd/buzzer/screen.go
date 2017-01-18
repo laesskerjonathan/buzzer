@@ -23,7 +23,7 @@ const (
 	DefaultFontExtraSmall          = "Sans 20"
 	DefaultFontSmall               = "Sans 40"
 	DefaultFontLarge               = "Sans 50"
-	DefaultKeypadText              = "%s\nEnter a valid Pitch Code to release the Buzzer ... "
+	DefaultKeypadText              = "%s\nEnter a valid PIN to release the Buzzer ... "
 )
 
 // Screen represents the display
@@ -48,7 +48,7 @@ func NewScreen() *Screen {
 	}
 }
 
-//
+// Init the screen
 func (s *Screen) Init(name, winTitle, iconName string) {
 	gdk.ThreadsInit()
 	gtk.Init(nil)
@@ -102,8 +102,8 @@ func (s *Screen) Init(name, winTitle, iconName string) {
 
 	// statusbar
 	statusbar := gtk.NewStatusbar()
-	context_id := statusbar.GetContextId("go-gtk")
-	statusbar.Push(context_id, s.statusText())
+	contextID := statusbar.GetContextId("go-gtk")
+	statusbar.Push(contextID, s.statusText())
 	box.PackStart(statusbar, false, false, 0)
 
 	// window
@@ -112,7 +112,7 @@ func (s *Screen) Init(name, winTitle, iconName string) {
 	window.ShowAll()
 }
 
-//
+// Main thread
 func (s *Screen) Main() {
 	go func() {
 		gdk.ThreadsEnter()
@@ -121,7 +121,7 @@ func (s *Screen) Main() {
 	}()
 }
 
-//
+// Destroy the screen ... not really
 func (s *Screen) Destroy() {
 	gtk.MainQuit()
 }
@@ -133,7 +133,7 @@ func (s *Screen) setLabel(label *gtk.Label, text string) {
 	gdk.ThreadsLeave()
 }
 
-//
+// StartTicker does what it says
 func (s *Screen) StartTicker() {
 	go func() {
 		text := s.Ticker
@@ -156,12 +156,12 @@ func (s *Screen) StartTicker() {
 	}()
 }
 
-//
+// StopTicker does what it says
 func (s *Screen) StopTicker() {
 	s.stopTicker = true
 }
 
-//
+// Update the information on the screen
 func (s *Screen) Update(data fmt.Stringer) error {
 	p, _ := data.(*pitch.Pitch)
 	s.setLabel(s.speaker, p.Speaker)
@@ -186,17 +186,17 @@ func (s *Screen) Update(data fmt.Stringer) error {
 	return nil
 }
 
-//
+// StopCountdown does what it says
 func (s *Screen) StopCountdown() {
 	s.stopCountdown = true
 }
 
-//
+// Keypad set new keypad information
 func (s *Screen) Keypad(text string) {
 	s.setLabel(s.keypad, text)
 }
 
-//
+// statusText prepares the text for the status line
 func (s *Screen) statusText() string {
 	var ipAddrs []string
 	ifaces, _ := net.Interfaces()

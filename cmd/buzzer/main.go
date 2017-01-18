@@ -1,17 +1,13 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
-	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
 	"syscall"
-	"time"
 
 	"github.com/marcsauter/buzzer/pkg/pitch"
 
@@ -20,6 +16,11 @@ import (
 )
 
 func main() {
+	pin := os.Getenv("BUZZER_PIN")
+	if len(pin) == 0 {
+		pin = "1982"
+		log.Fatal("BUZZER_PIN missing using default")
+	}
 	device := os.Getenv("BUZZER_KEYPAD_DEVICE")
 	if len(device) == 0 {
 		log.Fatal("BUZZER_KEYPAD_DEVICE missing or not valid")
@@ -60,38 +61,17 @@ func main() {
 	p := pitch.NewPitch(url)
 	p.StartCheckNext(interval, s)
 	//
-	startPitch := func(pid string) error {
-		url.Path = fmt.Sprintf("start/%s", pid)
-		resp, err := http.Get(url.String())
-		if err != nil {
-			return err
-		}
-		defer resp.Body.Close()
-		decoder := json.NewDecoder(resp.Body)
-		var p struct {
-			Message string
-		}
-		if err := decoder.Decode(&p); err != nil {
-			return err
-		}
-		if resp.StatusCode != 200 {
-			return errors.New(p.Message)
-		}
-		return nil
-	}
-	//
 	code := k.Start()
 	cancel := make(chan os.Signal, 1)
 	signal.Notify(cancel, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 	for {
 		select {
 		case c := <-code:
-			if err := startPitch(c); err != nil {
-				s.Keypad(fmt.Sprintf(DefaultKeypadText, fmt.Sprintf("ERROR: %s", err.Error())))
+			if c == pin {
+				s.Keypad(fmt.Sprintf(DefaultKeypadText, "ERROR: invalid PIN"))
 			} else {
-				s.Keypad(fmt.Sprintf("Pitch Code valid - Please press the Buzzer to release the Pitch ...\n"))
+				s.Keypad(fmt.Sprintf("PIN valid - Please press the Buzzer to release the Pitch ...\n"))
 				b.Watch()
-				s.Keypad(fmt.Sprintf(DefaultKeypadText, fmt.Sprintf("%s - Pitch %s released", time.Now().Format("02.01.2006 15:04:05"), c)))
 				l.On() // light on
 				h.On() // horn on
 			}

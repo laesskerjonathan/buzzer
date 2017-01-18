@@ -6,11 +6,9 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
-	"path/filepath"
 	"time"
 
-	"github.com/marcsauter/buzzer/pkg/device"
+	"github.com/mholt/binding"
 )
 
 // Updater interface
@@ -29,6 +27,17 @@ type Pitch struct {
 	ReleasedAt   time.Time `json:"startedat"`
 	pitchURL     *url.URL
 	ticker       *time.Ticker
+}
+
+// FieldMap implements the FieldMapper interface for github.com/mholt/binding
+// these are the only vital fields
+func (p *Pitch) FieldMap(r *http.Request) binding.FieldMap {
+	return binding.FieldMap{
+		&p.ID:      "id",
+		&p.Speaker: "speaker",
+		&p.Title:   "title",
+		&p.Date:    "date",
+	}
 }
 
 // FormattedDate returns the formatted Date
@@ -96,11 +105,6 @@ func (p *Pitch) StartCheckNext(interval int, out Updater) {
 				p.Date = next.Date
 				out.Update(p)
 			}
-
-			// TODO: remove if buzzer-ws is no longer in use
-			p.pitchURL.Path = "device"
-			device.Register(filepath.Base(os.Args[0]), p.pitchURL.String())
-
 			<-p.ticker.C
 		}
 	}()
