@@ -1,10 +1,6 @@
-hash: 713b18094731bb77b4f7d35dc11acae90974a007821f467b4cb077091d2924e3
-updated: 2017-01-11T08:00:20.305350565+01:00
+hash: 8b0f2b86ba7e0684ff5b201f01a3c91ad8f1a4b33a195456647e575156d54935
+updated: 2017-01-24T11:59:18.964351324+01:00
 imports:
-- name: github.com/golang/protobuf
-  version: 4bd1920723d7b7c925de087aa32e2187708897f7
-  subpackages:
-  - proto
 - name: github.com/gvalkov/golang-evdev
   version: 87c03aa1a370124ec5a5fac733a629e0f9acd9a6
 - name: github.com/luismesas/goPi
@@ -24,23 +20,12 @@ imports:
   - pango
 - name: github.com/mattn/go-pointer
   version: 46aacf851f34ad5bb503ee6d162915f3a5a5962c
+- name: github.com/mholt/binding
+  version: da15bc6a25d54500d6d19bf8bcdea7efde27bf0c
+- name: github.com/pressly/chi
+  version: 54f435d539226571eab1987ed862b1c0fdfdc892
+  subpackages:
+  - render
 - name: github.com/tarm/serial
   version: 37be519d49878d0098e34fb614136b81e6c87861
-- name: github.com/unrolled/render
-  version: 50716a0a853771bb36bfce61a45cdefdb98c2e6e
-- name: golang.org/x/net
-  version: 6acef71eb69611914f7a30939ea9f6e194c78172
-  subpackages:
-  - context
-- name: google.golang.org/appengine
-  version: 8758a385849434ba5eac8aeedcf5192c5a0f5f10
-  subpackages:
-  - datastore
-  - internal
-  - internal/app_identity
-  - internal/base
-  - internal/datastore
-  - internal/log
-  - internal/modules
-  - internal/remote_api
 testImports: []

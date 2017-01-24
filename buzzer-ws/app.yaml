@@ -1,8 +1,0 @@
-application: buzzer-ws
-version: 1
-runtime: go
-api_version: go1
-
-handlers:
-- url: /(|view|add|save|del|remove|next|start/[0-9]+|device|devices)$
-  script: _go_app

@@ -1,4 +1,4 @@
-package: gitlab.com/marcsauter/pitchbuzzer
+package: github.com/marcsauter/buzzer
 import:
 - package: github.com/gvalkov/golang-evdev
 - package: github.com/luismesas/goPi
@@ -10,10 +10,8 @@ import:
   - gdk
   - glib
   - gtk
-- package: github.com/unrolled/render
-- package: golang.org/x/net
+- package: github.com/mholt/binding
+- package: github.com/pressly/chi
   subpackages:
-  - context
-- package: google.golang.org/appengine
-  subpackages:
-  - datastore
+  - render
+- package: github.com/tarm/serial
