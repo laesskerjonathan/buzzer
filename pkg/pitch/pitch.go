@@ -13,6 +13,7 @@ import (
 
 // Updater interface
 type Updater interface {
+	Stop() error
 	Update(data fmt.Stringer) error
 }
 
@@ -68,7 +69,9 @@ func NewPitch(u *url.URL) *Pitch {
 
 // Pitch has to fullfill the Stringer interface - see also Updater interface
 func (p *Pitch) String() string {
-	return fmt.Sprintf("%s - %s - %s", p.Speaker, p.Title, p.Date.Format("02.01.2006 15:04"))
+
+	text := fmt.Sprintf("In %d Minuten Pitch im PFLab: %s von %s", int(time.Until(p.Date).Minutes()), p.Title, p.Speaker)
+	return text
 }
 
 // StartCheckNext start the checker for the next pitch and updates Pitch if something changes
@@ -98,12 +101,25 @@ func (p *Pitch) StartCheckNext(interval int, out Updater) {
 	go func() {
 		p.ticker = time.NewTicker(time.Second * time.Duration(interval))
 		for {
-			if next := getNextPitch(); len(next.ID) > 0 && next.ID != p.ID {
+			next := getNextPitch()
+			
+			zrh, _ := time.LoadLocation("Europe/Zurich")
+			pitchDate := next.Date.In(zrh)
+			minutesUntilNextPitch := int(time.Until(pitchDate).Minutes());
+			
+			
+			logText := fmt.Sprintf("ID: %s, Speaker: %s, Title: %s, Date: %s", next.ID, next.Speaker, next.Title, pitchDate)
+			
+			if len(next.ID) > 0 {
 				p.ID = next.ID
 				p.Speaker = next.Speaker
 				p.Title = next.Title
 				p.Date = next.Date
 				out.Update(p)
+			}
+			
+			if len(next.ID) <= 0 || minutesUntilNextPitch > 30 || minutesUntilNextPitch <=0 {
+				out.Stop();
 			}
 			<-p.ticker.C
 		}
